@@ -1,0 +1,23 @@
+{
+    "name": "@njkleiner/urls",
+    "version": "1.0.0",
+    "description": "Make working with URLs great again",
+    "main": "index.js",
+    "scripts": {
+        "test": "mocha --recursive test/"
+    },
+    "keywords": [],
+    "author": "Noah Kleiner <noah@njkleiner.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "mocha": "^7.1.1"
+    },
+    "directories": {
+        "test": "test"
+    },
+    "dependencies": {},
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/njkleiner/urls.git"
+    }
+}
