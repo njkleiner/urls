@@ -1,6 +1,6 @@
 {
     "name": "@njkleiner/urls",
-    "version": "1.0.0",
+    "version": "0.0.0",
     "description": "Make working with URLs great again",
     "main": "index.js",
     "scripts": {
@@ -19,5 +19,8 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/njkleiner/urls.git"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }
