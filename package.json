@@ -15,6 +15,9 @@
     "directories": {
         "test": "test"
     },
+    "files": [
+        "index.js"
+    ],
     "dependencies": {},
     "repository": {
         "type": "git",
