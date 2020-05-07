@@ -200,6 +200,45 @@ describe('urls#normalizeQuery', () => {
     });
 });
 
+describe('urls#appendQuery', () => {
+    it('should return null if input is invalid', () => {
+        return assert.equal(urls.appendQuery(null, null), null);
+    });
+
+    it('should return null if input is valid but empty', () => {
+        return assert.equal(urls.normalizeQuery('', {}), null);
+    });
+
+    it('should append (to empty) query', () => {
+        return assert.equal(urls.appendQuery('https://example.com/test', {
+            'foo': 'bar'
+        }), 'https://example.com/test?foo=bar');
+    });
+
+    it('should append (to existing) query', () => {
+        return assert.equal(urls.appendQuery('https://example.com/test?abc=xyz', {
+            'foo': 'bar'
+        }), 'https://example.com/test?abc=xyz&foo=bar');
+    });
+
+    it('should append query to empty path', () => {
+        return assert.equal(urls.appendQuery('https://example.com/', {
+            'foo': 'bar'
+        }), 'https://example.com/?foo=bar');
+    });
+
+    it('should append (to existing, nested) query', () => {
+        return assert.equal(urls.appendQuery('https://example.com/test?pq=nm&abc[]=foo&a[b]=c', {
+            'abc': [
+                'bar'
+            ],
+            'a': {
+                'd': 'e'
+            }
+        }), encodeURI('https://example.com/test?pq=nm&abc[0]=foo&abc[1]=bar&a[b]=c&a[d]=e'));
+    });
+});
+
 describe('urls#join', () => {
     it('should return null if input is invalid', () => {
         return assert.equal(urls.join(null, null), null);

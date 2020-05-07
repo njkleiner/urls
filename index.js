@@ -1,6 +1,38 @@
 const qs = require('qs');
 
 /**
+* Performs a deep merge of objects and returns new object. Does not modify
+* objects (immutable) and merges arrays via concatenation.
+*
+* Adapted from: https://stackoverflow.com/a/48218209/11494525
+* @private
+*
+* @param {object[]} objects The objects to merge.
+*
+* @returns {object} The new object with merged key/values.
+*/
+function merge(...objects) {
+    const isObject = (value) => value && typeof value === 'object';
+
+    return objects.reduce((previous, current) => {
+        Object.keys(current).forEach(key => {
+            const left = previous[key];
+            const right = current[key];
+
+            if (Array.isArray(left) && Array.isArray(right)) {
+                previous[key] = left.concat(...right);
+            } else if (isObject(left) && isObject(right)) {
+                previous[key] = merge(left, right);
+            } else {
+                previous[key] = right;
+            }
+        });
+
+        return previous;
+    }, {});
+}
+
+/**
 * Determine whether a string is a valid URL.
 *
 * @param {string} value A string for which to determine whether it is a URL.
@@ -175,6 +207,29 @@ function normalizeQuery(value) {
 }
 
 /**
+* Append query parameters to an existing URL.
+*
+* @param {string} value The URL to append query parameters to.
+* @param {object} query A dictionary of query parameters to append.
+*
+* @asserts isURL(value)
+* @asserts typeof query === 'object'
+*
+* @return {string} The resulting URL, or `null`.
+*/
+function appendQuery(value, query) {
+    if (!(isURL(value) && typeof query === 'object')) {
+        return null;
+    }
+
+    const {origin, pathname, search} = new URL(value);
+    const current = qs.parse(search, {'ignoreQueryPrefix': true});
+    const combined = qs.stringify(merge(current, query));
+
+    return `${origin}${pathname}?${combined}`;
+}
+
+/**
 * Join a base URL and a path segment.
 *
 * @param {string} base The base URL to add the path to.
@@ -195,5 +250,5 @@ function join(base, path) {
 
 module.exports = Object.freeze({
     isURL, isAbsolute, isRelative, compare, matchesHost,
-    normalize, normalizeQuery, join
+    normalize, normalizeQuery, appendQuery, join
 });

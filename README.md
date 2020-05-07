@@ -35,6 +35,9 @@ urls.matchesHost('https://www.example.com/test', 'example.com');
 urls.normalizeQuery('https://www.example.com/?abc=def&xyz=123');
 // => {'abc': 'def', 'xyz': '123'}
 
+urls.appendQuery('https://example.com/test?abc=xyz', {'foo': 'bar'});
+// => https://example.com/test?abc=xyz&foo=bar
+
 urls.join('https://example.com', '/test');
 // => https://example.com/test
 ```
