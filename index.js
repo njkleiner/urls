@@ -1,3 +1,5 @@
+const qs = require('qs');
+
 /**
 * Determine whether a string is a valid URL.
 *
@@ -168,13 +170,8 @@ function normalizeQuery(value) {
     }
 
     const url = new URL(value);
-    const query = {};
 
-    for(let [key, value] of url.searchParams.entries()) {
-        query[key] = value;
-    }
-
-    return query;
+    return qs.parse(url.search, {'ignoreQueryPrefix': true});
 }
 
 /**

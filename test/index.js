@@ -181,6 +181,23 @@ describe('urls#normalizeQuery', () => {
             'foo': 'bar'
         });
     });
+
+    it('should normalize nested query', () => {
+        return assert.deepEqual(urls.normalizeQuery('https://example.com/test?abc=xyz&foo[bar]=baz'), {
+            'abc': 'xyz',
+            'foo': {
+                'bar': 'baz'
+            }
+        });
+    });
+
+    it('should normalize nested query with array indices', () => {
+        return assert.deepEqual(urls.normalizeQuery('https://example.com/test?foo[0]=bar&foo[1]=baz'), {
+            'foo': [
+                'bar', 'baz'
+            ]
+        });
+    });
 });
 
 describe('urls#join', () => {
