@@ -247,6 +247,10 @@ describe('urls#appendQuery', () => {
             }
         }), encodeURI('https://example.com/test?pq=nm&abc[0]=foo&abc[1]=bar&a[b]=c&a[d]=e'));
     });
+
+    it('should append nothing to nothing', () => {
+        return assert.equal(urls.appendQuery('https://example.com/', {}), 'https://example.com/');
+    });
 });
 
 describe('urls#join', () => {

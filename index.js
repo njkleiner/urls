@@ -235,7 +235,7 @@ function appendQuery(value, query) {
     const current = qs.parse(search, {'ignoreQueryPrefix': true});
     const combined = qs.stringify(merge(current, query));
 
-    return `${origin}${pathname}?${combined}`;
+    return normalize(`${origin}${pathname}?${combined}`);
 }
 
 /**
