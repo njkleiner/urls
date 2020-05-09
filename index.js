@@ -133,8 +133,17 @@ function normalize(value) {
 
     try {
         const url = new URL(value);
+        let normalized = url.toString();
 
-        return url.toString();
+        if (url.href.endsWith('?') && !url.search.length) {
+            normalized = normalized.replace(/\?$/, '');
+        }
+
+        if (url.href.endsWith('#') && !url.hash.length) {
+            normalized = normalized.replace(/#$/, '');
+        }
+
+        return normalized;
     } catch (error) {
         return null;
     }

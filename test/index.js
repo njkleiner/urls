@@ -124,6 +124,16 @@ describe('urls#normalize', () => {
     it('should add default protocol to protocol-relative URL', () => {
         return assert.equal(urls.normalize('//example.com'), 'http://example.com/');
     });
+
+    it('should remove trailing question mark', () => {
+        // Note that in this case `url.search` is empty, thus the question mark serves no purpose.
+        return assert.equal(urls.normalize('http://example.com/?'), 'http://example.com/');
+    });
+
+    it('should remove trailing hash sign', () => {
+        // Note that in this case `url.hash` is empty, thus the hash sign serves no purpose.
+        return assert.equal(urls.normalize('http://example.com/#'), 'http://example.com/');
+    });
 });
 
 describe('urls#compare', () => {
