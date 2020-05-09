@@ -25,6 +25,9 @@
         "type": "git",
         "url": "https://github.com/njkleiner/urls.git"
     },
+    "engines": {
+        "node": ">=10.20.1"
+    },
     "publishConfig": {
         "access": "public"
     }
