@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const urls = require('../');
+const urls = require('..');
 
 describe('urls#isURL', () => {
     it('should return false if input is invalid', () => {

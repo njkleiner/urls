@@ -2,7 +2,7 @@
     "name": "@njkleiner/urls",
     "version": "0.0.0",
     "description": "Make working with URLs great again",
-    "main": "index.js",
+    "main": "lib/index.js",
     "scripts": {
         "test": "mocha --recursive test/"
     },
@@ -13,10 +13,11 @@
         "mocha": "^7.1.1"
     },
     "directories": {
-        "test": "test"
+        "test": "test",
+        "lib": "lib"
     },
     "files": [
-        "index.js"
+        "lib"
     ],
     "dependencies": {
         "qs": "^6.9.4"
