@@ -20,6 +20,8 @@
         "lib"
     ],
     "dependencies": {
+        "is-absolute-url": "^3.0.3",
+        "is-relative-url": "^3.0.0",
         "qs": "^6.9.4"
     },
     "repository": {
