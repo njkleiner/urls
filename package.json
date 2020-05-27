@@ -10,7 +10,7 @@
     "author": "Noah Kleiner <noah@njkleiner.com>",
     "license": "MIT",
     "devDependencies": {
-        "mocha": "^7.1.1"
+        "mocha": "^7.2.0"
     },
     "directories": {
         "test": "test",
@@ -20,6 +20,7 @@
         "lib"
     ],
     "dependencies": {
+        "deepmerge": "^4.2.2",
         "is-absolute-url": "^3.0.3",
         "is-relative-url": "^3.0.0",
         "qs": "^6.9.4"
