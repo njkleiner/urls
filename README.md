@@ -1,6 +1,6 @@
 # urls
 
-> Make working with URLs great again
+A collection of common functions to make working with URLs less painful.
 
 ## Install
 
@@ -41,6 +41,133 @@ urls.appendQuery('https://example.com/test?abc=xyz', {'foo': 'bar'});
 urls.join('https://example.com', '/test');
 // => https://example.com/test
 ```
+
+## API
+
+### urls.isURL(value, protocols?)
+
+Returns `true` if `value` is a valid URL.
+
+#### value
+
+Type: `string`
+
+The string for which to determine whether it is a URL.
+
+#### protocols
+
+Type: `Array<string>`\
+Default: `['http', 'https']`
+
+A list of valid protocols.
+
+By default, only `http` and `https` are considered valid protocols. If you want to accept any protocol, use an empty array.
+
+### urls.isAbsolute(value)
+
+Returns `true` if `value` is an absolute URL.
+
+#### value
+
+Type: `string`
+
+The URL to test.
+
+### urls.isRelative(value)
+
+Returns `true` if `value` is a relative URL.
+
+#### value
+
+Type: `string`
+
+The URL to test.
+
+### urls.normalize(value)
+
+Takes a URL-like string and returns a normalized URL.
+
+Appends `http://` if no protocol is specified, normalizes the URL by calling `new URL(value).toString()` and removes trailing `#` and `?` characters when possible.
+
+#### value
+
+Type: `string`
+
+The URL to normalize.
+
+### urls.compare(left, right)
+
+Returns `true` if `left` and `right` are valid URLs and are equal after normalizing them.
+
+#### left
+
+Type: `string`
+
+The first URL to compare.
+
+#### right
+
+Type: `string`
+
+The second URL to compare.
+
+### urls.matchesHost(value, host)
+
+Returns `true` if `value` is a valid URL and its host is `host`.
+
+#### value
+
+Type: `string`
+
+The URL whoose host to test.
+
+#### host
+
+Type: `string`
+
+The host to test against.
+
+### urls.normalizeQuery(value)
+
+Returns a dictionary `object` of query parameters parsed from `value`.
+
+#### value
+
+Type: `string`
+
+The URL whoose query parameters to parse and normalize.
+
+### urls.appendQuery(value, query)
+
+Appends query parameters to an existing URL and returns the stringified result.
+
+#### value
+
+Type: `string`
+
+The URL to append query parameters to.
+
+#### query
+
+Type: `object`
+
+A dictionary of query parameters to append.
+
+### urls.join(base, path)
+
+Returns a stringified URL that is the result of appending `path` to `base`.
+
+#### base
+
+Type: `string`
+
+The base URL to append `path` to.
+
+#### path
+
+Type: `string`
+
+The path segment appended to `path`.
 
 ## Contributing
 
