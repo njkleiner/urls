@@ -1,280 +1,260 @@
-const assert = require('assert');
+const test = require('ava');
 
 const urls = require('..');
 
-describe('urls#isURL', () => {
-    it('should return false if input is invalid', () => {
-        return assert.equal(urls.isURL(null), false);
-    });
+test('urls#isUrl: should return false if input is invalid', t => {
+    return t.false(urls.isURL(null));
+});
 
-    it('should return false if input is valid but empty', () => {
-        return assert.equal(urls.isURL(''), false);
-    });
+test('urls#isUrl: should return false if input is valid but empty', t => {
+    return t.false(urls.isURL(''));
+});
 
-    it('should return true if input is valid', () => {
-        return assert.equal(urls.isURL('http://example.com'), true);
-    });
+test('urls#isUrl: should return true if input is valid', t => {
+    return t.true(urls.isURL('http://example.com'));
+});
 
-    it('should allow HTTP URLs by default', () => {
-        return assert.equal(urls.isURL('http://example.com'), true);
-    });
+test('urls#isUrl: should allow HTTP URLs by default', t => {
+    return t.true(urls.isURL('http://example.com'));
+});
 
-    it('should allow HTTPS URLs by default', () => {
-        return assert.equal(urls.isURL('https://example.com'), true);
-    });
+test('urls#isUrl: should allow HTTPS URLs by default', t => {
+    return t.true(urls.isURL('https://example.com'));
+});
 
-    it('should return false if protocol is not allowed', () => {
-        return assert.equal(urls.isURL('ftp://example.com'), false);
-    });
+test('urls#isUrl: should return false if protocol is not allowed', t => {
+    return t.false(urls.isURL('ftp://example.com'));
+});
 
-    it('should return true if protocol is explicitly allowed', () => {
-        return assert.equal(urls.isURL('ftp://example.com', ['ftp']), true);
-    });
+test('urls#isUrl: should return true if protocol is explicitly allowed', t => {
+    return t.true(urls.isURL('ftp://example.com', ['ftp']));
+});
 
-    it('should return true if any protocol is allowed', () => {
-        return assert.equal(urls.isURL('ftp://example.com', []), true);
-    });
+test('urls#isUrl: should return true if any protocol is allowed', t => {
+    return t.true(urls.isURL('ftp://example.com', []));
+});
 
-    it('should return true if input is a valid URL object', () => {
-        return assert.equal(urls.isURL(new URL('http://example.com')), true);
-    });
+test('urls#isUrl: should return true if input is a valid URL object', t => {
+    return t.true(urls.isURL(new URL('http://example.com')));
+});
 
-    it('should allow HTTP URLs by default (URL object)', () => {
-        return assert.equal(urls.isURL(new URL('http://example.com')), true);
-    });
+test('urls#isUrl: should allow HTTP URLs by default (URL object)', t => {
+    return t.true(urls.isURL(new URL('http://example.com')));
+});
 
-    it('should allow HTTPS URLs by default (URL object)', () => {
-        return assert.equal(urls.isURL(new URL('https://example.com')), true);
-    });
+test('urls#isUrl: should allow HTTPS URLs by default (URL object)', t => {
+    return t.true(urls.isURL(new URL('https://example.com')));
+});
 
-    it('should return false if protocol is not allowed (URL object)', () => {
-        return assert.equal(urls.isURL(new URL('ftp://example.com')), false);
-    });
+test('urls#isUrl: should return false if protocol is not allowed (URL object)', t => {
+    return t.false(urls.isURL(new URL('ftp://example.com')));
+});
 
-    it('should return true if protocol is explicitly allowed (URL object)', () => {
-        return assert.equal(urls.isURL(new URL('ftp://example.com'), ['ftp']), true);
-    });
+test('urls#isUrl: should return true if protocol is explicitly allowed (URL object)', t => {
+    return t.true(urls.isURL(new URL('ftp://example.com'), ['ftp']));
+});
 
-    it('should return true if any protocol is allowed (URL object)', () => {
-        return assert.equal(urls.isURL(new URL('ftp://example.com'), []), true);
+test('urls#isUrl: should return true if any protocol is allowed (URL object)', t => {
+    return t.true(urls.isURL(new URL('ftp://example.com'), []));
+});
+
+test('urls#isAbsolute: should return false if input is invalid', t => {
+    return t.false(urls.isAbsolute(null));
+});
+
+test('urls#isAbsolute: should return false if input is valid but empty', t => {
+    return t.false(urls.isAbsolute(''));
+});
+
+test('urls#isAbsolute: should return true URL is absolute', t => {
+    return t.true(urls.isAbsolute('http://example.com'));
+});
+
+test('urls#isAbsolute: should return false URL is not absolute', t => {
+    return t.false(urls.isAbsolute('/about'));
+});
+
+test('urls#isRelative: should return false if input is invalid', t => {
+    return t.false(urls.isRelative(null));
+});
+
+test('urls#isRelative: should return false if input is valid but empty', t => {
+    return t.false(urls.isRelative(''));
+});
+
+test('urls#isRelative: should return true URL is relative (path-relative)', t => {
+    return t.true(urls.isRelative('/about'));
+});
+
+test('urls#isRelative: should return true URL is relative (not absolute)', t => {
+    return t.true(urls.isRelative('about'));
+});
+
+test('urls#isRelative: should return false URL is not relative (absolute)', t => {
+    return t.false(urls.isRelative('http://example.com'));
+});
+
+test('urls#isRelative: should return true if URL is protocol-relative', t => {
+    return t.true(urls.isRelative('//example.com'));
+});
+
+test('urls#normalize: should return null if input is invalid', t => {
+    return t.is(urls.normalize(null), null);
+});
+
+test('urls#normalize: should return null if input is valid but empty', t => {
+    return t.is(urls.normalize(''), null);
+});
+
+test('urls#normalize: should add trailing slash', t => {
+    return t.is(urls.normalize('http://example.com'), 'http://example.com/');
+});
+
+test('urls#normalize: should add default protocol', t => {
+    return t.is(urls.normalize('example.com'), 'http://example.com/');
+});
+
+test('urls#normalize: should add default protocol to protocol-relative URL', t => {
+    return t.is(urls.normalize('//example.com'), 'http://example.com/');
+});
+
+test('urls#normalize: should remove trailing question mark', t => {
+    return t.is(urls.normalize('http://example.com/?'), 'http://example.com/');
+});
+
+test('urls#normalize: should remove trailing hash sign', t => {
+    return t.is(urls.normalize('http://example.com/#'), 'http://example.com/');
+});
+
+test('urls#compare: should return false if input is invalid', t => {
+    return t.false(urls.compare(null, null));
+});
+
+test('urls#compare: should return false if input is valid but empty', t => {
+    return t.false(urls.compare('', ''));
+});
+
+test('urls#compare: should return true if URLs are equal (normalize protocol)', t => {
+    return t.true(urls.compare('HTTP://example.com', 'example.com'));
+});
+
+test('urls#compare: should return true if URLs are equal (normalize host case)', t => {
+    return t.true(urls.compare('http://EXAMPLE.COM', 'example.com'));
+});
+
+test('urls#matchesHost: should return false if input is invalid', t => {
+    return t.false(urls.matchesHost(null, null));
+});
+
+test('urls#matchesHost: should return false if input is valid but empty', t => {
+    return t.false(urls.matchesHost('', ''));
+});
+
+test('urls#matchesHost: should return true if the host matches', t => {
+    return t.true(urls.matchesHost('http://example.com/abc/xyz', 'example.com'));
+});
+
+test('urls#matchesHost: should return true if the host and port match', t => {
+    return t.true(urls.matchesHost('http://example.com:1337/abc/xyz', 'example.com:1337'));
+});
+
+test('urls#normalizeQuery: should return null if input is invalid', t => {
+    return t.is(urls.normalizeQuery(null), null);
+});
+
+test('urls#normalizeQuery: should return null if input is valid but empty', t => {
+    return t.is(urls.normalizeQuery(''), null);
+});
+
+test('urls#normalizeQuery: should normalize empty query', t => {
+    return t.deepEqual(urls.normalizeQuery('http://example.com'), {});
+});
+
+test('urls#normalizeQuery: should normalize non-empty query', t => {
+    return t.deepEqual(urls.normalizeQuery('https://example.com/test?abc=xyz&foo=bar'), {
+        'abc': 'xyz',
+        'foo': 'bar'
     });
 });
 
-describe('urls#isAbsolute', () => {
-    it('should return false if input is invalid', () => {
-        return assert.equal(urls.isAbsolute(null), false);
-    });
-
-    it('should return false if input is valid but empty', () => {
-        return assert.equal(urls.isAbsolute(''), false);
-    });
-
-    it('should return true URL is absolute', () => {
-        return assert.equal(urls.isAbsolute('http://example.com'), true);
-    });
-
-    it('should return false URL is not absolute', () => {
-        return assert.equal(urls.isAbsolute('/about'), false);
+test('urls#normalizeQuery: should normalize nested query', t => {
+    return t.deepEqual(urls.normalizeQuery('https://example.com/test?abc=xyz&foo[bar]=baz'), {
+        'abc': 'xyz',
+        'foo': {
+            'bar': 'baz'
+        }
     });
 });
 
-describe('urls#isRelative', () => {
-    it('should return false if input is invalid', () => {
-        return assert.equal(urls.isRelative(null), false);
-    });
-
-    it('should return false if input is valid but empty', () => {
-        return assert.equal(urls.isRelative(''), false);
-    });
-
-    it('should return true URL is relative (path-relative)', () => {
-        return assert.equal(urls.isRelative('/about'), true);
-    });
-
-    it('should return true URL is relative (not absolute)', () => {
-        return assert.equal(urls.isRelative('about'), true);
-    });
-
-    it('should return false URL is not relative (absolute)', () => {
-        return assert.equal(urls.isRelative('http://example.com'), false);
-    });
-
-    it('should return true if URL is protocol-relative', () => {
-        return assert.equal(urls.isRelative('//example.com'), true);
+test('urls#normalizeQuery: should normalize nested query with array indices', t => {
+    return t.deepEqual(urls.normalizeQuery('https://example.com/test?foo[0]=bar&foo[1]=baz'), {
+        'foo': [
+            'bar', 'baz'
+        ]
     });
 });
 
-describe('urls#normalize', () => {
-    it('should return null if input is invalid', () => {
-        return assert.equal(urls.normalize(null), null);
-    });
-
-    it('should return null if input is valid but empty', () => {
-        return assert.equal(urls.normalize(''), null);
-    });
-
-    it('should add trailing slash', () => {
-        return assert.equal(urls.normalize('http://example.com'), 'http://example.com/');
-    });
-
-    it('should add default protocol', () => {
-        return assert.equal(urls.normalize('example.com'), 'http://example.com/');
-    });
-
-    it('should add default protocol to protocol-relative URL', () => {
-        return assert.equal(urls.normalize('//example.com'), 'http://example.com/');
-    });
-
-    it('should remove trailing question mark', () => {
-        // Note that in this case `url.search` is empty, thus the question mark serves no purpose.
-        return assert.equal(urls.normalize('http://example.com/?'), 'http://example.com/');
-    });
-
-    it('should remove trailing hash sign', () => {
-        // Note that in this case `url.hash` is empty, thus the hash sign serves no purpose.
-        return assert.equal(urls.normalize('http://example.com/#'), 'http://example.com/');
-    });
+test('urls#appendQuery: should return null if input is invalid', t => {
+    return t.is(urls.appendQuery(null, null), null);
 });
 
-describe('urls#compare', () => {
-    it('should return false if input is invalid', () => {
-        return assert.equal(urls.compare(null, null), false);
-    });
-
-    it('should return false if input is valid but empty', () => {
-        return assert.equal(urls.compare('', ''), false);
-    });
-
-    it('should return true if URLs are equal (normalize protocol)', () => {
-        return assert.equal(urls.compare('HTTP://example.com', 'example.com'), true);
-    });
-
-    it('should return true if URLs are equal (normalize host case)', () => {
-        return assert.equal(urls.compare('http://EXAMPLE.COM', 'example.com'), true);
-    });
+test('urls#appendQuery: should return null if input is valid but empty', t => {
+    return t.is(urls.normalizeQuery('', {}), null);
 });
 
-describe('urls#matchesHost', () => {
-    it('should return false if input is invalid', () => {
-        return assert.equal(urls.matchesHost(null, null), false);
-    });
-
-    it('should return false if input is valid but empty', () => {
-        return assert.equal(urls.matchesHost('', ''), false);
-    });
-
-    it('should return true if the host matches', () => {
-        return assert.equal(urls.matchesHost('http://example.com/abc/xyz', 'example.com'), true);
-    });
-
-    it('should return true if the host and port match', () => {
-        return assert.equal(urls.matchesHost('http://example.com:1337/abc/xyz', 'example.com:1337'), true);
-    });
+test('urls#appendQuery: should append (to empty) query', t => {
+    return t.is(urls.appendQuery('https://example.com/test', {
+        'foo': 'bar'
+    }), 'https://example.com/test?foo=bar');
 });
 
-describe('urls#normalizeQuery', () => {
-    it('should return null if input is invalid', () => {
-        return assert.equal(urls.normalizeQuery(null), null);
-    });
-
-    it('should return null if input is valid but empty', () => {
-        return assert.equal(urls.normalizeQuery(''), null);
-    });
-
-    it('should normalize empty query', () => {
-        return assert.deepEqual(urls.normalizeQuery('http://example.com'), {});
-    });
-
-    it('should normalize non-empty query', () => {
-        return assert.deepEqual(urls.normalizeQuery('https://example.com/test?abc=xyz&foo=bar'), {
-            'abc': 'xyz',
-            'foo': 'bar'
-        });
-    });
-
-    it('should normalize nested query', () => {
-        return assert.deepEqual(urls.normalizeQuery('https://example.com/test?abc=xyz&foo[bar]=baz'), {
-            'abc': 'xyz',
-            'foo': {
-                'bar': 'baz'
-            }
-        });
-    });
-
-    it('should normalize nested query with array indices', () => {
-        return assert.deepEqual(urls.normalizeQuery('https://example.com/test?foo[0]=bar&foo[1]=baz'), {
-            'foo': [
-                'bar', 'baz'
-            ]
-        });
-    });
+test('urls#appendQuery: should append (to existing) query', t => {
+    return t.is(urls.appendQuery('https://example.com/test?abc=xyz', {
+        'foo': 'bar'
+    }), 'https://example.com/test?abc=xyz&foo=bar');
 });
 
-describe('urls#appendQuery', () => {
-    it('should return null if input is invalid', () => {
-        return assert.equal(urls.appendQuery(null, null), null);
-    });
-
-    it('should return null if input is valid but empty', () => {
-        return assert.equal(urls.normalizeQuery('', {}), null);
-    });
-
-    it('should append (to empty) query', () => {
-        return assert.equal(urls.appendQuery('https://example.com/test', {
-            'foo': 'bar'
-        }), 'https://example.com/test?foo=bar');
-    });
-
-    it('should append (to existing) query', () => {
-        return assert.equal(urls.appendQuery('https://example.com/test?abc=xyz', {
-            'foo': 'bar'
-        }), 'https://example.com/test?abc=xyz&foo=bar');
-    });
-
-    it('should append query to empty path', () => {
-        return assert.equal(urls.appendQuery('https://example.com/', {
-            'foo': 'bar'
-        }), 'https://example.com/?foo=bar');
-    });
-
-    it('should append (to existing, nested) query', () => {
-        return assert.equal(urls.appendQuery('https://example.com/test?pq=nm&abc[]=foo&a[b]=c', {
-            'abc': [
-                'bar'
-            ],
-            'a': {
-                'd': 'e'
-            }
-        }), encodeURI('https://example.com/test?pq=nm&abc[0]=foo&abc[1]=bar&a[b]=c&a[d]=e'));
-    });
-
-    it('should append nothing to nothing', () => {
-        return assert.equal(urls.appendQuery('https://example.com/', {}), 'https://example.com/');
-    });
+test('urls#appendQuery: should append query to empty path', t => {
+    return t.is(urls.appendQuery('https://example.com/', {
+        'foo': 'bar'
+    }), 'https://example.com/?foo=bar');
 });
 
-describe('urls#join', () => {
-    it('should return null if input is invalid', () => {
-        return assert.equal(urls.join(null, null), null);
-    });
+test('urls#appendQuery: should append (to existing, nested) query', t => {
+    return t.is(urls.appendQuery('https://example.com/test?pq=nm&abc[]=foo&a[b]=c', {
+        'abc': [
+            'bar'
+        ],
+        'a': {
+            'd': 'e'
+        }
+    }), encodeURI('https://example.com/test?pq=nm&abc[0]=foo&abc[1]=bar&a[b]=c&a[d]=e'));
+});
 
-    it('should return null if input is valid but empty', () => {
-        return assert.equal(urls.join('', ''), null);
-    });
+test('urls#appendQuery: should append nothing to nothing', t => {
+    return t.is(urls.appendQuery('https://example.com/', {}), 'https://example.com/');
+});
 
-    it('should fail to join two absolute URLs', () => {
-        return assert.deepEqual(urls.join('http://example.com', 'https://example.org'), null);
-    });
+test('urls#join: should return null if input is invalid', t => {
+    return t.is(urls.join(null, null), null);
+});
 
-    it('should fail to join two relative URLs', () => {
-        return assert.deepEqual(urls.join('/abc', '/xyz'), null);
-    });
+test('urls#join: should return null if input is valid but empty', t => {
+    return t.is(urls.join('', ''), null);
+});
 
-    it('should join valid base URL and valid path', () => {
-        return assert.deepEqual(urls.join('http://example.com', '/test'), 'http://example.com/test');
-    });
+test('urls#join: should fail to join two absolute URLs', t => {
+    return t.is(urls.join('http://example.com', 'https://example.org'), null);
+});
 
-    it('should join valid base URL and valid path without leading slash', () => {
-        return assert.deepEqual(urls.join('http://example.com', 'test'), 'http://example.com/test');
-    });
+test('urls#join: should fail to join two relative URLs', t => {
+    return t.is(urls.join('/abc', '/xyz'), null);
+});
+
+test('urls#join: should join valid base URL and valid path', t => {
+    return t.is(urls.join('http://example.com', '/test'), 'http://example.com/test');
+});
+
+test('urls#join: should join valid base URL and valid path without leading slash', t => {
+    return t.is(urls.join('http://example.com', 'test'), 'http://example.com/test');
 });
