@@ -235,6 +235,13 @@ test('urls#appendQuery: should append nothing to nothing', t => {
     return t.is(urls.appendQuery('https://example.com/', {}), 'https://example.com/');
 });
 
+test('urls#appendQuery: should preserve fragment', t => {
+    return t.is(
+        urls.appendQuery('https://example.com/home#about', {'foo': 'bar'}),
+        'https://example.com/home?foo=bar#about'
+    );
+});
+
 test('urls#join: should return null if input is invalid', t => {
     return t.is(urls.join(null, null), null);
 });
