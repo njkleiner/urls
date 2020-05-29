@@ -167,7 +167,7 @@ The base URL to append `path` to.
 
 Type: `string`
 
-The path segment appended to `path`.
+The path segment appended to `base`.
 
 ## Contributing
 
