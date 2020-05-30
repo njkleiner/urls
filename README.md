@@ -1,4 +1,4 @@
-# urls
+# urls ![Build Status](https://img.shields.io/travis/njkleiner/urls/develop) ![Downloads](https://img.shields.io/npm/dm/@njkleiner/urls)
 
 A collection of common functions to make working with URLs less painful.
 
