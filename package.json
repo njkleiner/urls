@@ -1,6 +1,6 @@
 {
     "name": "@njkleiner/urls",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "description": "A collection of common functions to make working with URLs less painful",
     "main": "lib/index.js",
     "scripts": {
